@@ -1,32 +1,43 @@
-use crate::access::AsyncResource;
-use crate::channel;
-use crate::executor::{with_world_mut, with_world_ref, QUERY_QUEUE, REACTORS, WORLD};
-use crate::sync::oneshot::{ChannelOut, MaybeChannelOut};
-use crate::{access::AsyncEntityMut, reactors::StateSignal, signals::SignalId, tween::AsSeconds};
-use crate::{access::AsyncWorld, AccessError, AccessResult};
-use async_shared::Value;
-use bevy::app::AppExit;
-use bevy::ecs::event::Event;
-use bevy::ecs::message::{Message, MessageId};
-use bevy::ecs::system::{Command, IntoSystem, SystemId};
-use bevy::ecs::world::{CommandQueue, FromWorld, Mut};
-use bevy::ecs::{bundle::Bundle, resource::Resource, schedule::ScheduleLabel, world::World};
-use bevy::prelude::SystemInput;
-use bevy::state::state::{FreelyMutableState, NextState, State, States};
-use bevy::tasks::AsyncComputeTaskPool;
-use futures::future::ready;
-use futures::future::Either;
-use futures::stream::FusedStream;
-use std::any::type_name;
-use std::task::Context;
-use std::time::Duration;
 use std::{
-    future::{poll_fn, Future},
-    task::Poll,
+    any::type_name,
+    future::{Future, poll_fn},
+    task::{Context, Poll},
+    time::Duration,
 };
 
+use async_shared::Value;
 #[allow(unused)]
 use bevy::ecs::entity::Entity;
+use bevy::{
+    app::AppExit,
+    ecs::{
+        bundle::Bundle,
+        event::Event,
+        message::{Message, MessageId},
+        resource::Resource,
+        schedule::ScheduleLabel,
+        system::{Command, IntoSystem, SystemId},
+        world::{CommandQueue, FromWorld, Mut, World},
+    },
+    prelude::SystemInput,
+    state::state::{FreelyMutableState, NextState, State, States},
+    tasks::AsyncComputeTaskPool,
+};
+use futures::{
+    future::{Either, ready},
+    stream::FusedStream,
+};
+
+use crate::{
+    AccessError, AccessResult,
+    access::{AsyncEntityMut, AsyncResource, AsyncWorld},
+    channel,
+    executor::{QUERY_QUEUE, REACTORS, WORLD, with_world_mut, with_world_ref},
+    reactors::StateSignal,
+    signals::SignalId,
+    sync::oneshot::{ChannelOut, MaybeChannelOut},
+    tween::AsSeconds,
+};
 
 impl AsyncWorld {
     /// Apply a command.

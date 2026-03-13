@@ -1,16 +1,24 @@
-use std::any::type_name;
-use std::sync::atomic::{AtomicI32, Ordering};
-use std::sync::Arc;
+use std::{
+    any::type_name,
+    sync::{
+        Arc,
+        atomic::{AtomicI32, Ordering},
+    },
+};
 
-use crate::access::AsyncWorld;
-use crate::executor::{with_world_mut, ASSET_SERVER};
-use crate::sync::oneshot::MaybeChannelOut;
-use crate::{AccessError, AccessResult};
-use bevy::asset::meta::Settings;
-use bevy::asset::{Asset, AssetId, AssetPath, AssetServer, Assets, Handle, LoadState};
-use bevy::ecs::world::World;
+use bevy::{
+    asset::{Asset, AssetId, AssetPath, AssetServer, Assets, Handle, LoadState, meta::Settings},
+    ecs::world::World,
+};
 use event_listener::Event;
-use futures::future::{ready, Either};
+use futures::future::{Either, ready};
+
+use crate::{
+    AccessError, AccessResult,
+    access::AsyncWorld,
+    executor::{ASSET_SERVER, with_world_mut},
+    sync::oneshot::MaybeChannelOut,
+};
 
 #[derive(Debug, Default)]
 pub struct AssetBarrierInner {

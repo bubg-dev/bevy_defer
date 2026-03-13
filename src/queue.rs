@@ -1,20 +1,33 @@
-use crate::executor::QUERY_QUEUE;
-use crate::sync::oneshot::ChannelOutOrCancel;
-use crate::sync::waitlist::WaitList;
-use crate::AccessResult;
-use crate::{access::AsyncWorld, cancellation::TaskCancellation, channel, sync::oneshot::Sender};
-use bevy::diagnostic::FrameCount;
-use bevy::ecs::system::NonSend;
-use bevy::ecs::system::Res;
-use bevy::ecs::world::World;
-use bevy::time::{Time, Virtual};
-use std::ops::Deref;
-use std::rc::Rc;
-use std::time::Duration;
-use std::{cell::Cell, cell::RefCell, collections::BinaryHeap};
+use std::{
+    cell::{Cell, RefCell},
+    collections::BinaryHeap,
+    ops::Deref,
+    rc::Rc,
+    time::Duration,
+};
 
 #[allow(unused)]
 use bevy::app::Update;
+use bevy::{
+    diagnostic::FrameCount,
+    ecs::{
+        system::{NonSend, Res},
+        world::World,
+    },
+    time::{Time, Virtual},
+};
+
+use crate::{
+    AccessResult,
+    access::AsyncWorld,
+    cancellation::TaskCancellation,
+    channel,
+    executor::QUERY_QUEUE,
+    sync::{
+        oneshot::{ChannelOutOrCancel, Sender},
+        waitlist::WaitList,
+    },
+};
 
 /// A Task running on [`Update`] once per frame.
 pub(crate) struct FixedTask {

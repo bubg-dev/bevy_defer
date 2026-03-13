@@ -1,9 +1,9 @@
 use bevy::{
+    DefaultPlugins,
     app::{App, Startup},
     input::keyboard::KeyboardInput,
     prelude::{Camera2d, KeyCode, World},
     sprite::Text2d,
-    DefaultPlugins,
 };
 use bevy_defer::{AppReactorExtension, AsyncExtension, AsyncPlugin, AsyncWorld};
 

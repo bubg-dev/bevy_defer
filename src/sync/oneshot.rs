@@ -1,14 +1,15 @@
 //! `!Send` version of `futures_channels::oneshot`
-use futures::{
-    future::{Either, Fuse, FusedFuture, Ready},
-    FutureExt,
-};
-use std::future::Future;
 use std::{
     cell::{Cell, RefCell},
+    future::Future,
     pin::Pin,
     rc::Rc,
     task::{Context, Poll, Waker},
+};
+
+use futures::{
+    FutureExt,
+    future::{Either, Fuse, FusedFuture, Ready},
 };
 
 use crate::{AccessResult, CHANNEL_CLOSED};
@@ -195,7 +196,7 @@ impl<T> Future for ChannelCancel<'_, T> {
     type Output = ();
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<()> {
-        self.0 .0.poll_canceled(cx)
+        self.0.0.poll_canceled(cx)
     }
 }
 
@@ -255,7 +256,7 @@ impl<T> Future for ChannelOutOrCancel<T> {
     type Output = Option<T>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        self.0 .0.recv(cx).map(|x| x.ok())
+        self.0.0.recv(cx).map(|x| x.ok())
     }
 }
 
@@ -271,7 +272,7 @@ impl Future for InterpolateOut {
     type Output = AccessResult<()>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        self.0 .0.recv(cx).map(|x| match x {
+        self.0.0.recv(cx).map(|x| match x {
             Ok(x) => x,
             Err(_) => Ok(()),
         })
@@ -280,7 +281,7 @@ impl Future for InterpolateOut {
 
 impl FusedFuture for InterpolateOut {
     fn is_terminated(&self) -> bool {
-        self.0 .0.complete.get()
+        self.0.0.complete.get()
     }
 }
 

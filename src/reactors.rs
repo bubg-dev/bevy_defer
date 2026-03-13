@@ -1,27 +1,29 @@
 //! Signals and synchronization primitives for reacting to standard bevy events.
-use async_shared::Value;
-use bevy::ecs::message::MessageReader;
-use bevy::ecs::prelude::ResMut;
-use bevy::ecs::{
-    component::Component,
-    entity::Entity,
-    query::{Changed, With},
-    resource::Resource,
-    system::{Local, Query, Res},
-};
-use bevy::state::prelude::StateTransitionEvent;
-use bevy::state::state::States;
-use rustc_hash::FxHashMap;
 use std::{
     convert::Infallible,
     marker::PhantomData,
     sync::{Arc, Mutex},
 };
+
+use async_shared::Value;
+use bevy::{
+    ecs::{
+        component::Component,
+        entity::Entity,
+        message::MessageReader,
+        prelude::ResMut,
+        query::{Changed, With},
+        resource::Resource,
+        system::{Local, Query, Res},
+    },
+    state::{prelude::StateTransitionEvent, state::States},
+};
+use rustc_hash::FxHashMap;
 use ty_map_gen::type_map;
 
 use crate::{
-    signals::{SignalId, SignalSender, Signals},
     ScopedTasks,
+    signals::{SignalId, SignalSender, Signals},
 };
 
 /// Signal that sends changed values of a [`States`].

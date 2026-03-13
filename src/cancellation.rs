@@ -4,8 +4,8 @@ use std::{
     cell::Cell,
     rc::Rc,
     sync::{
-        atomic::{AtomicBool, AtomicU32, Ordering},
         Arc,
+        atomic::{AtomicBool, AtomicU32, Ordering},
     },
 };
 

@@ -1,15 +1,18 @@
-use bevy::asset::{Asset, AssetId, Handle};
-use bevy::ecs::{
-    prelude::{Component, Entity, Resource},
-    query::{QueryData, QueryFilter},
-};
 use std::borrow::Borrow;
 
+use bevy::{
+    asset::{Asset, AssetId, Handle},
+    ecs::{
+        prelude::{Component, Entity, Resource},
+        query::{QueryData, QueryFilter},
+    },
+};
+
 use crate::{
+    AsyncWorld,
     access::{
         AsyncAsset, AsyncComponent, AsyncEntityMut, AsyncEntityQuery, AsyncQuery, AsyncResource,
     },
-    AsyncWorld,
 };
 
 /// Obtain a value from the `World`.
@@ -174,11 +177,13 @@ pub fn fetch<T: FetchEntity<M>, M>(entity: &impl Borrow<Entity>) -> T::Out {
 
 #[cfg(test)]
 mod text {
-    use crate::access::AsyncAsset;
-    use crate::AsyncWorld;
-    use bevy::asset::{AssetId, Handle};
-    use bevy::diagnostic::SystemInfo;
-    use bevy::prelude::{Entity, GlobalTransform, Image, Transform, With};
+    use bevy::{
+        asset::{AssetId, Handle},
+        prelude::{Entity, GlobalTransform, Image, Transform, With},
+    };
+    use bevy_diagnostic::SystemInfo;
+
+    use crate::{AsyncWorld, access::AsyncAsset};
 
     #[test]
     fn test_fetch() {

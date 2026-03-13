@@ -3,7 +3,7 @@ use bevy::{
     prelude::*,
 };
 use bevy_defer::{
-    access::AsyncWorld, AccessResult, AppReactorExtension, AsyncExtension, AsyncPlugin,
+    AccessResult, AppReactorExtension, AsyncExtension, AsyncPlugin, access::AsyncWorld,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, States)]

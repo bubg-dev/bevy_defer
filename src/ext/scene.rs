@@ -1,11 +1,20 @@
-use crate::access::{AsyncEntityMut, AsyncWorld};
-use crate::AccessResult;
-use bevy::ecs::component::Component;
-use bevy::ecs::query::With;
-use bevy::ecs::system::{Commands, Query};
-use bevy::ecs::{bundle::Bundle, entity::Entity};
-use bevy::scene::SceneInstance;
 use std::borrow::Borrow;
+
+use bevy::{
+    ecs::{
+        bundle::Bundle,
+        component::Component,
+        entity::Entity,
+        query::With,
+        system::{Commands, Query},
+    },
+    scene::SceneInstance,
+};
+
+use crate::{
+    AccessResult,
+    access::{AsyncEntityMut, AsyncWorld},
+};
 
 /// A component that sends a signal and removes itself
 /// if a paired `Scene` is loaded.

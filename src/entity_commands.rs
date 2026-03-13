@@ -1,28 +1,34 @@
-use crate::access::AsyncWorld;
-use crate::executor::{with_world_mut, with_world_ref};
-use crate::signals::Observed;
-use crate::InspectEntity;
-use crate::OwnedReadonlyQueryState;
-use crate::{access::AsyncEntityMut, AccessError, AccessResult};
-use bevy::ecs::bundle::BundleFromComponents;
-use bevy::ecs::component::Component;
-use bevy::ecs::event::EntityEvent;
-use bevy::ecs::hierarchy::{ChildOf, Children};
-use bevy::ecs::name::Name;
-use bevy::ecs::observer::On;
-use bevy::ecs::relationship::{Relationship, RelationshipTarget};
-use bevy::ecs::system::{EntityCommand, IntoObserverSystem};
-use bevy::ecs::world::{EntityRef, EntityWorldMut};
-use bevy::ecs::{bundle::Bundle, entity::Entity, world::World};
-use bevy::transform::components::{GlobalTransform, Transform};
+use std::{
+    any::type_name,
+    borrow::Borrow,
+    future::{Future, ready},
+};
+
+use bevy::{
+    ecs::{
+        bundle::{Bundle, BundleFromComponents},
+        component::Component,
+        entity::Entity,
+        event::EntityEvent,
+        hierarchy::{ChildOf, Children},
+        name::Name,
+        observer::On,
+        relationship::{Relationship, RelationshipTarget},
+        system::{EntityCommand, IntoObserverSystem},
+        world::{EntityRef, EntityWorldMut, World},
+    },
+    transform::components::{GlobalTransform, Transform},
+};
 use event_listener::Event as AsyncEvent;
-use futures::channel::mpsc;
-use futures::future::Either;
-use futures::Stream;
+use futures::{Stream, channel::mpsc, future::Either};
 use rustc_hash::FxHashMap;
-use std::any::type_name;
-use std::borrow::Borrow;
-use std::future::{ready, Future};
+
+use crate::{
+    AccessError, AccessResult, InspectEntity, OwnedReadonlyQueryState,
+    access::{AsyncEntityMut, AsyncWorld},
+    executor::{with_world_mut, with_world_ref},
+    signals::Observed,
+};
 
 impl AsyncEntityMut {
     /// Run a function on the [`EntityRef`].

@@ -1,9 +1,6 @@
-use bevy::ecs::component::Component;
-use bevy::ecs::entity::Entity;
-use bevy::ecs::resource::Resource;
-use std::any::type_name;
-use std::fmt::Debug;
-use std::marker::PhantomData;
+use std::{any::type_name, fmt::Debug, marker::PhantomData};
+
+use bevy::ecs::{component::Component, entity::Entity, resource::Resource};
 
 /// An `AsyncSystemParam` that gets or sets a component on the current `Entity`.
 pub struct AsyncComponent<C: Component> {

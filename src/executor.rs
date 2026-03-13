@@ -1,12 +1,9 @@
-use crate::queue::QueryQueue;
-use crate::reactors::Reactors;
+use std::{fmt::Display, future::Future, rc::Rc};
+
 use async_executor::{LocalExecutor, Task};
-use bevy::asset::AssetServer;
-use bevy::ecs::world::World;
-use bevy::log::error;
-use std::fmt::Display;
-use std::future::Future;
-use std::rc::Rc;
+use bevy::{asset::AssetServer, ecs::world::World, log::error};
+
+use crate::{queue::QueryQueue, reactors::Reactors};
 
 scoped_tls_hkt::scoped_thread_local!(pub(crate) static mut WORLD: World);
 scoped_tls_hkt::scoped_thread_local!(pub(crate) static WORLD_READ_ONLY: World);

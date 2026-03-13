@@ -1,12 +1,13 @@
 use std::marker::PhantomData;
 
-use crate::{
-    executor::{with_world_mut, with_world_ref},
-    AccessError, AccessResult, AsyncWorld,
-};
 use bevy::ecs::{
     entity::Entity,
     world::{EntityRef, EntityWorldMut},
+};
+
+use crate::{
+    AccessError, AccessResult, AsyncWorld,
+    executor::{with_world_mut, with_world_ref},
 };
 
 /// A mapped accessor of a component or a set of components.
@@ -104,12 +105,12 @@ struct MappedDynAccess<T, F1, F2, A, B> {
 }
 
 impl<
-        T: DynAccess<A>,
-        F1: Fn(&A) -> AccessResult<&B>,
-        F2: Fn(&mut A) -> AccessResult<&mut B>,
-        A: 'static,
-        B: 'static,
-    > DynAccess<B> for MappedDynAccess<T, F1, F2, A, B>
+    T: DynAccess<A>,
+    F1: Fn(&A) -> AccessResult<&B>,
+    F2: Fn(&mut A) -> AccessResult<&mut B>,
+    A: 'static,
+    B: 'static,
+> DynAccess<B> for MappedDynAccess<T, F1, F2, A, B>
 {
     fn entity(&self) -> Entity {
         self.base.entity()

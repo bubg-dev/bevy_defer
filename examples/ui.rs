@@ -1,9 +1,6 @@
 #![allow(clippy::type_complexity)]
-use bevy::prelude::*;
-use bevy::tasks::futures_lite::StreamExt;
-use bevy::ui::RelativeCursorPosition;
-use bevy_defer::AsyncPlugin;
-use bevy_defer::{fetch, AsyncEntityCommandsExtension};
+use bevy::{prelude::*, tasks::futures_lite::StreamExt, ui::RelativeCursorPosition};
+use bevy_defer::{AsyncEntityCommandsExtension, AsyncPlugin, fetch};
 
 fn main() {
     App::new()

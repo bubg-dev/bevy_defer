@@ -1,5 +1,6 @@
-use super::signal_component::Signals;
 use std::{any::Any, marker::PhantomData};
+
+use super::signal_component::Signals;
 
 /// A marker type that indicates the type and purpose of a signal.
 pub trait SignalId: Any + Send + Sync + 'static {

@@ -1,11 +1,12 @@
 use std::borrow::Borrow;
 
-use super::{AsyncAsset, AsyncComponent, AsyncNonSend, AsyncResource, AsyncWorld};
-use crate::{AccessResult, FetchEntity, FetchWorld};
 use bevy::{
     asset::{Asset, AssetId, Handle},
     prelude::{Component, Entity, Resource},
 };
+
+use super::{AsyncAsset, AsyncComponent, AsyncNonSend, AsyncResource, AsyncWorld};
+use crate::{AccessResult, FetchEntity, FetchWorld};
 
 /// Types, usually a [`Component`], that contains a single [`Handle`].
 pub trait GetHandle {

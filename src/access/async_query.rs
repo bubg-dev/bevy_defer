@@ -1,20 +1,19 @@
-use crate::{executor::with_world_mut, AccessError};
-use bevy::ecs::entity::EntityEquivalent;
-use bevy::ecs::query::{QuerySingleError, ReadOnlyQueryData};
+use std::{any::type_name, borrow::Borrow, fmt::Debug, marker::PhantomData, ops::Deref};
+
 #[allow(unused)]
 use bevy::ecs::system::Query;
-use bevy::ecs::world::CommandQueue;
 use bevy::ecs::{
-    entity::Entity,
-    query::{QueryData, QueryFilter, QueryIter, QueryManyIter, QueryState},
+    entity::{Entity, EntityEquivalent},
+    query::{
+        QueryData, QueryFilter, QueryIter, QueryManyIter, QuerySingleError, QueryState,
+        ReadOnlyQueryData,
+    },
     resource::Resource,
-    world::World,
+    world::{CommandQueue, World},
 };
-use std::any::type_name;
-use std::fmt::Debug;
-use std::{borrow::Borrow, marker::PhantomData, ops::Deref};
 
 use super::AsyncEntityMut;
+use crate::{AccessError, executor::with_world_mut};
 
 /// Async version of [`Query`]
 pub struct AsyncQuery<T: QueryData, F: QueryFilter = ()>(pub(crate) PhantomData<(T, F)>);

@@ -13,8 +13,8 @@ use bevy::ecs::{
 use ref_cast::RefCast;
 
 use crate::{
-    executor::{WORLD, WORLD_READ_ONLY},
     AsyncWorld,
+    executor::{WORLD, WORLD_READ_ONLY},
 };
 
 /// Provides a [`Display`] implementation for [`Entity`] inside a `bevy_defer` scope.

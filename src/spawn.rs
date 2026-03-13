@@ -1,13 +1,17 @@
-use async_executor::Task;
-use bevy::ecs::prelude::Resource;
-use bevy::log::error;
-use bevy::state::prelude::{State, States};
-use rustc_hash::FxHashMap;
-use std::any::type_name;
-use std::{future::Future, marker::PhantomData};
+use std::{any::type_name, future::Future, marker::PhantomData};
 
-use crate::executor::{with_world_mut, with_world_ref};
-use crate::{executor::SPAWNER, AccessError, AccessResult, AsyncWorld};
+use async_executor::Task;
+use bevy::{
+    ecs::prelude::Resource,
+    log::error,
+    state::prelude::{State, States},
+};
+use rustc_hash::FxHashMap;
+
+use crate::{
+    AccessError, AccessResult, AsyncWorld,
+    executor::{SPAWNER, with_world_mut, with_world_ref},
+};
 
 /// A list of tasks constrained by [`States`].
 #[derive(Debug, Resource)]

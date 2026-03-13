@@ -1,11 +1,13 @@
-use crate::{AccessResult, AsyncWorld};
+use std::collections::VecDeque;
+
 use bevy::ecs::{
     message::{Message, MessageReader},
     resource::Resource,
     system::ResMut,
 };
 use event_listener::Event;
-use std::collections::VecDeque;
+
+use crate::{AccessResult, AsyncWorld};
 
 /// An event queue that functions as a Mpmc channel.
 ///

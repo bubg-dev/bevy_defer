@@ -6,25 +6,31 @@
 //!
 //! Additionally [`MainAnimationChange`] can react to [`AnimationTransitions`]'s main animation being changed.
 
-use crate::executor::with_world_mut;
-use crate::reactors::Change;
-use crate::signals::{SignalSender, Signals};
-use crate::tween::AsSeconds;
-use crate::{
-    access::{deref::AsyncComponentDeref, AsyncComponent},
-    AccessResult,
+use std::ops::{Deref, DerefMut};
+
+use bevy::{
+    animation::{
+        AnimationPlayer,
+        prelude::{AnimationNodeIndex, AnimationTransitions},
+    },
+    ecs::{
+        component::Component,
+        entity::{Entity, EntityHashMap},
+        query::{Changed, With},
+        system::{Local, Query},
+    },
 };
-use crate::{AccessError, OwnedQueryState};
-use bevy::animation::prelude::{AnimationNodeIndex, AnimationTransitions};
-use bevy::animation::AnimationPlayer;
-use bevy::ecs::component::Component;
-use bevy::ecs::entity::{Entity, EntityHashMap};
-use bevy::ecs::query::With;
-use bevy::ecs::system::Local;
-use bevy::ecs::{query::Changed, system::Query};
 use futures::{Future, FutureExt};
 use ref_cast::RefCast;
-use std::ops::{Deref, DerefMut};
+
+use crate::{
+    AccessError, AccessResult, OwnedQueryState,
+    access::{AsyncComponent, deref::AsyncComponentDeref},
+    executor::with_world_mut,
+    reactors::Change,
+    signals::{SignalSender, Signals},
+    tween::AsSeconds,
+};
 
 /// Async accessor to [`AnimationPlayer`].
 #[derive(RefCast)]

@@ -1,22 +1,19 @@
 use std::{
     sync::{
-        atomic::{AtomicBool, AtomicU32, Ordering},
         Arc,
+        atomic::{AtomicBool, AtomicU32, Ordering},
     },
     time::Duration,
 };
 
 use async_shared::Value;
-use bevy::diagnostic::FrameCountPlugin;
-use bevy::prelude::*;
-use bevy::time::TimePlugin;
-use bevy::MinimalPlugins;
+use bevy::{MinimalPlugins, diagnostic::FrameCountPlugin, prelude::*, time::TimePlugin};
 #[allow(deprecated)]
 use bevy_defer::{
-    access::AsyncWorld, signal_ids, signals::SignalSender, AppReactorExtension, AsyncExtension,
-    AsyncPlugin,
+    AppReactorExtension, AsyncExtension, AsyncPlugin, access::AsyncWorld, signal_ids,
+    signals::SignalSender,
 };
-use bevy_defer::{signals::Signals, systems::run_async_executor, AsyncCommandsExtension};
+use bevy_defer::{AsyncCommandsExtension, signals::Signals, systems::run_async_executor};
 use futures::StreamExt;
 signal_ids! {
     SigText: &'static str,

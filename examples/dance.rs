@@ -1,9 +1,8 @@
-use bevy::prelude::*;
-use bevy::tasks::futures_lite::StreamExt;
-use bevy::MinimalPlugins;
+use bevy::{MinimalPlugins, prelude::*, tasks::futures_lite::StreamExt};
 use bevy_defer::{
-    access::{deref::AsyncComponentDeref, AsyncComponent, AsyncWorld},
-    signal_ids, AccessError, AppReactorExtension, AsyncExtension, AsyncPlugin,
+    AccessError, AppReactorExtension, AsyncExtension, AsyncPlugin,
+    access::{AsyncComponent, AsyncWorld, deref::AsyncComponentDeref},
+    signal_ids,
 };
 use futures::FutureExt;
 use ref_cast::RefCast;
@@ -13,6 +12,7 @@ use std::{
     pin::pin,
     time::Duration,
 };
+
 signal_ids! {
     SigText: &'static str,
 }

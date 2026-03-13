@@ -1,15 +1,18 @@
 use std::{
     convert::Infallible,
     sync::{
-        atomic::{AtomicBool, Ordering},
         Arc,
+        atomic::{AtomicBool, Ordering},
     },
     time::Duration,
 };
 
-use bevy::asset::{AssetLoader, AsyncReadExt};
-use bevy::{prelude::*, tasks::ConditionalSendFuture};
-use bevy_defer::{access::AsyncWorld, AsyncExtension, AsyncPlugin};
+use bevy::{
+    asset::{AssetLoader, AsyncReadExt},
+    prelude::*,
+    tasks::ConditionalSendFuture,
+};
+use bevy_defer::{AsyncExtension, AsyncPlugin, access::AsyncWorld};
 
 #[derive(Debug, Asset, TypePath, Clone, PartialEq)]
 pub struct JsonNumber(i64);

@@ -35,7 +35,7 @@ use bevy::ecs::world::World;
 pub use signal_component::{SignalMap, Signals};
 pub use signal_utils::*;
 
-use crate::{access::AsyncEntityMut, executor::with_world_mut, AccessError, AccessResult};
+use crate::{AccessError, AccessResult, access::AsyncEntityMut, executor::with_world_mut};
 
 impl AsyncEntityMut {
     /// Send data through a signal on this entity.

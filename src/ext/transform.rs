@@ -1,10 +1,12 @@
-use bevy::math::{Dir3, Quat, Vec3};
-use bevy::transform::prelude::Transform;
+use bevy::{
+    math::{Dir3, Quat, Vec3},
+    transform::prelude::Transform,
+};
 use ref_cast::RefCast;
 
 use crate::{
-    access::{deref::AsyncComponentDeref, AsyncComponent},
     AccessResult,
+    access::{AsyncComponent, deref::AsyncComponentDeref},
 };
 
 #[derive(Debug, RefCast)]

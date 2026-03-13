@@ -1,6 +1,8 @@
-use crate::InspectEntity;
-use bevy::ecs::entity::Entity;
 use std::any::type_name;
+
+use bevy::ecs::entity::Entity;
+
+use crate::InspectEntity;
 
 #[cfg(feature = "full_types")]
 fn fmt(s: &str) -> &str {

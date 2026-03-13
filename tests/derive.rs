@@ -2,8 +2,9 @@ use std::{any::Any, sync::Arc};
 
 use bevy::prelude::*;
 use bevy_defer::{
+    AsyncExtension, AsyncPlugin,
     access::{AsyncResource, AsyncWorld},
-    async_access, async_dyn, AsyncExtension, AsyncPlugin,
+    async_access, async_dyn,
 };
 
 #[derive(Debug, Resource, AsyncResource)]

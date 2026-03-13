@@ -1,7 +1,7 @@
-use crate::AsyncWorld;
 use bevy::asset::{Asset, AssetPath, Handle};
-pub use default_constructor;
-pub use default_constructor::InferInto;
+pub use default_constructor::{self, InferInto};
+
+use crate::AsyncWorld;
 
 /// Add an asset from its type, returns its [`Handle`].
 pub fn add<T: Asset>(item: T) -> Handle<T> {

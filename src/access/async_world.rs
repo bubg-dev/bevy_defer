@@ -1,7 +1,6 @@
 #![allow(deprecated)]
-use crate::access::{AsyncComponent, AsyncEntityQuery, AsyncNonSend, AsyncQuery, AsyncResource};
-use crate::executor::{QUERY_QUEUE, WORLD};
-use crate::in_async_context;
+use std::{borrow::Borrow, fmt::Display, marker::PhantomData, ops::Deref, time::Duration};
+
 use bevy::ecs::{
     component::Component,
     entity::Entity,
@@ -9,19 +8,18 @@ use bevy::ecs::{
     query::{QueryData, QueryFilter},
     resource::Resource,
 };
-use ref_cast::RefCast;
-use std::borrow::Borrow;
-use std::fmt::Display;
-use std::time::Duration;
-use std::{marker::PhantomData, ops::Deref};
-
 #[allow(unused)]
 use bevy::ecs::{system::Commands, world::World};
-
-#[allow(unused)]
-use crate::{AsyncExecutor, QueryQueue};
+use ref_cast::RefCast;
 
 use super::AsyncQuerySingle;
+#[allow(unused)]
+use crate::{AsyncExecutor, QueryQueue};
+use crate::{
+    access::{AsyncComponent, AsyncEntityQuery, AsyncNonSend, AsyncQuery, AsyncResource},
+    executor::{QUERY_QUEUE, WORLD},
+    in_async_context,
+};
 
 /// Async version of [`World`] or [`Commands`].
 ///

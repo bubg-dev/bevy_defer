@@ -1,19 +1,22 @@
 #![doc=include_str!("../README.md")]
 #![allow(clippy::type_complexity)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
-use bevy::app::{App, First, Plugin, PostUpdate, PreUpdate, Update};
-use bevy::ecs::component::Component;
-use bevy::ecs::intern::Interned;
-use bevy::ecs::message::Message;
-use bevy::ecs::query::{QueryFilter, ReadOnlyQueryData, ReleaseStateQueryData};
-use bevy::ecs::schedule::IntoScheduleConfigs as _;
-use bevy::ecs::system::Command;
-use bevy::prelude::EntityCommands;
-use bevy::state::prelude::State;
-use bevy::state::state::States;
-use bevy::time::TimeSystems;
-use std::fmt::Formatter;
-use std::{any::type_name, pin::Pin};
+use std::{any::type_name, fmt::Formatter, pin::Pin};
+
+use bevy::{
+    app::{App, First, Plugin, PostUpdate, PreUpdate, Update},
+    ecs::{
+        component::Component,
+        intern::Interned,
+        message::Message,
+        query::{QueryFilter, ReadOnlyQueryData, ReleaseStateQueryData},
+        schedule::IntoScheduleConfigs as _,
+        system::Command,
+    },
+    prelude::EntityCommands,
+    state::{prelude::State, state::States},
+    time::TimeSystems,
+};
 
 pub mod access;
 pub mod cancellation;
@@ -32,23 +35,26 @@ pub mod signals;
 mod spawn;
 pub(crate) mod sync;
 pub mod tween;
-pub use access::async_asset::AssetSet;
-pub use access::async_query::{OwnedQueryState, OwnedReadonlyQueryState};
-pub use access::AsyncWorld;
-pub use async_executor::Task;
-use bevy::ecs::{
-    schedule::{ScheduleLabel, SystemSet},
-    system::Commands,
-    world::World,
+pub use access::{
+    AsyncWorld,
+    async_asset::AssetSet,
+    async_query::{OwnedQueryState, OwnedReadonlyQueryState},
 };
-use bevy::reflect::std_traits::ReflectDefault;
+pub use async_executor::Task;
+use bevy::{
+    ecs::{
+        schedule::{ScheduleLabel, SystemSet},
+        system::Commands,
+        world::World,
+    },
+    reflect::std_traits::ReflectDefault,
+};
 pub use errors::AccessError;
 pub use event::EventChannel;
-pub use executor::{in_async_context, AsyncExecutor};
+pub use executor::{AsyncExecutor, in_async_context};
 #[doc(hidden)]
-pub use fetch::{fetch, fetch0, fetch1, fetch2, FetchEntity, FetchOne, FetchWorld};
-pub use queue::LoopForFrameData;
-pub use queue::QueryQueue;
+pub use fetch::{FetchEntity, FetchOne, FetchWorld, fetch, fetch0, fetch1, fetch2};
+pub use queue::{LoopForFrameData, QueryQueue};
 use reactors::Reactors;
 pub use spawn::ScopedTasks;
 #[doc(hidden)]
@@ -57,21 +63,23 @@ pub mod spawn_macro;
 
 /// Systems in `bevy_defer`.
 pub mod systems {
-    pub use crate::event::react_to_message;
-    pub use crate::executor::run_async_executor;
-    pub use crate::queue::{run_fixed_queue, run_time_series, run_watch_queries};
-    pub use crate::reactors::{react_to_component_change, react_to_state};
-
     #[cfg(feature = "bevy_animation")]
     pub use crate::ext::anim::react_to_animation;
     #[cfg(feature = "bevy_animation")]
     pub use crate::ext::anim::react_to_main_animation_change;
     #[cfg(feature = "bevy_scene")]
     pub use crate::ext::scene::react_to_scene_load;
+    pub use crate::{
+        event::react_to_message,
+        executor::run_async_executor,
+        queue::{run_fixed_queue, run_time_series, run_watch_queries},
+        reactors::{react_to_component_change, react_to_state},
+    };
 }
 
-pub use crate::sync::oneshot::channel;
 use std::future::Future;
+
+pub use crate::sync::oneshot::channel;
 
 pub(crate) static CHANNEL_CLOSED: &str = "channel closed unexpectedly";
 
@@ -81,14 +89,12 @@ pub use bevy::ecs::entity::Entity;
 pub use bevy::ecs::system::{NonSend, Res, SystemParam};
 #[doc(hidden)]
 pub use bevy::log::error;
-#[doc(hidden)]
-pub use ref_cast::RefCast;
-
-use queue::run_fixed_queue;
-use signals::Signals;
-
 #[cfg(feature = "derive")]
 pub use bevy_defer_derive::{async_access, async_dyn};
+use queue::run_fixed_queue;
+#[doc(hidden)]
+pub use ref_cast::RefCast;
+use signals::Signals;
 
 /// Result type of spawned tasks.
 pub type AccessResult<T = ()> = Result<T, AccessError>;
@@ -298,7 +304,7 @@ impl AsyncExtension for World {
             _ => {
                 return Err(AccessError::NotInState {
                     ty: type_name::<S>(),
-                })
+                });
             }
         };
         let task = self.non_send_resource::<AsyncExecutor>().spawn_task(fut);
@@ -650,8 +656,7 @@ macro_rules! attempt {
 macro_rules! test_spawn {
     ($expr: expr) => {{
         use ::bevy::prelude::*;
-        use ::bevy_defer::access::*;
-        use ::bevy_defer::*;
+        use ::bevy_defer::{access::*, *};
         use bevy::state::app::StatesPlugin;
         #[derive(Debug, Clone, Copy, Component, Resource, Event, Asset, TypePath)]
         pub struct Int(i32);

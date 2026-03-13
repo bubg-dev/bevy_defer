@@ -1,10 +1,11 @@
-use super::SignalId;
-use async_shared::Value;
-use bevy::ecs::component::Component;
-use bevy::reflect::Reflect;
-use rustc_hash::FxHashMap;
 use std::{fmt::Debug, sync::Arc};
+
+use async_shared::Value;
+use bevy::{ecs::component::Component, reflect::Reflect};
+use rustc_hash::FxHashMap;
 use ty_map_gen::type_map;
+
+use super::SignalId;
 
 type_map! {
     /// A type map of signals.

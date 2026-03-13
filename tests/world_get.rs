@@ -1,6 +1,7 @@
-use bevy::{diagnostic::FrameCountPlugin, prelude::*, time::TimePlugin};
-use bevy_defer::{access::AsyncWorld, AsyncExtension, AsyncPlugin};
 use std::sync::atomic::{AtomicBool, Ordering};
+
+use bevy::{diagnostic::FrameCountPlugin, prelude::*, time::TimePlugin};
+use bevy_defer::{AsyncExtension, AsyncPlugin, access::AsyncWorld};
 
 #[derive(Component)]
 pub struct Int(i32);

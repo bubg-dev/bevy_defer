@@ -1,31 +1,30 @@
 //! Access traits for `bevy_defer`.
 
-use crate::access::async_query::OwnedReadonlyQueryState;
-use crate::access::{
-    AsyncAsset, AsyncComponent, AsyncEntityQuery, AsyncNonSend, AsyncQuery, AsyncQuerySingle,
-    AsyncRelatedQuery, AsyncResource, AsyncWorld, RelatedQueryState,
+use std::{any::type_name, cell::OnceCell, marker::PhantomData};
+
+use bevy::{
+    asset::{Asset, Assets},
+    ecs::{
+        component::{Component, Mutable},
+        query::{QueryData, QueryFilter, ReadOnlyQueryData, ReleaseStateQueryData},
+        relationship::RelationshipTarget,
+        resource::Resource,
+    },
+    math::StableInterpolate,
 };
-use crate::tween::{AsSeconds, Playback};
-use crate::OwnedQueryState;
+
 use crate::{
+    AccessError, AccessResult, OwnedQueryState,
+    access::{
+        AsyncAsset, AsyncComponent, AsyncEntityQuery, AsyncNonSend, AsyncQuery, AsyncQuerySingle,
+        AsyncRelatedQuery, AsyncResource, AsyncWorld, RelatedQueryState,
+        async_query::OwnedReadonlyQueryState,
+    },
     cancellation::TaskCancellation,
     executor::{with_world_mut, with_world_ref},
     sync::oneshot::{ChannelOut, InterpolateOut},
-    AccessError, AccessResult,
+    tween::{AsSeconds, Playback},
 };
-use bevy::asset::{Asset, Assets};
-use bevy::ecs::component::Mutable;
-use bevy::ecs::query::{ReadOnlyQueryData, ReleaseStateQueryData};
-use bevy::ecs::relationship::RelationshipTarget;
-use bevy::ecs::{
-    component::Component,
-    query::{QueryData, QueryFilter},
-    resource::Resource,
-};
-use bevy::math::StableInterpolate;
-use std::any::type_name;
-use std::cell::OnceCell;
-use std::marker::PhantomData;
 
 trait ShouldContinue {
     fn should_continue(_e: AccessError) -> bool {
